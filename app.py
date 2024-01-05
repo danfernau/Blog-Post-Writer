@@ -22,6 +22,7 @@ def main():
     load_dotenv()
 
     blog_post = ""
+    blog_outline=""
     rules = "Start with an attention-grabbing headline: Your headline is the first thing that people see, so make sure it grabs your audience’s attention. Use numbers, questions, strong adjectives, and powerful verbs1. Write a catchy introduction paragraph: The introduction should immediately introduce your main argument or thesis and entice people into reading the rest of the post1. Include interesting statistics: Statistics can provide credibility to your post and engage readers with factual information1. Use strong visuals: Relevant images, videos, and infographics can make your post more engaging and easier to understand2. Use powerful quotes: Quotes can provide additional perspectives and support your arguments1. Write in an informal tone: An informal tone can make your post more relatable and enjoyable to read1. Write for your audience: Understand who your readers are and what they are interested in. This will help you create content that resonates with them1. Use lists to break up text: Lists can make your post more readable and digestible1. Add a call-to-action at the end of each post: This could be a prompt for readers to leave a comment, share your post, subscribe to your blog, or check out your other posts1. Proofread your work: Make sure your post is free of spelling and grammatical errors1."
     prompt_template_outline = ""
     prompt_template_post = ""
@@ -64,7 +65,7 @@ def main():
 
             if submitted1:
                 prompt_template = PromptTemplate.from_template(
-                    "You are an experienced blog article writer. Write a blog post outline about {topic}. Use bullet points to structure the blog post outline. Also consider the following guidelines for successful blog article writing: {rules}. Do not write more than 6 chapters. Generate the text as markdown language."
+                    "You are an experienced blog article writer. Write a blog post outline about {topic}. Use bullet points to structure the blog post outline. Also consider the following guidelines for successful blog article writing: {rules}. Do not write more than 6 chapters and only chapter headings. Generate the text as markdown language."
                 )
                 prompt = prompt_template.format(topic=topic_text, rules=rules)
 
@@ -72,9 +73,11 @@ def main():
 
                 outline = generate_response(prompt)
                 st.markdown(outline.content)
+                blog_outline = outline.content
 
     with tab3:
         st.header("Blog Post Crafting")
+        st.markdown(blog_outline)
         with st.form('form2'):
             feedback = st.text_area('Enter feedback:', '')
             length = st.text_input('Enter length:', '')
